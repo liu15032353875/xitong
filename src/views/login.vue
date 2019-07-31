@@ -12,7 +12,7 @@
         label-width="80px"
         style="margin-top:30px"
       >
-      <!-- prop设置需要校验的字段名 -->
+        <!-- prop设置需要校验的字段名 -->
         <el-form-item label="用户名" prop="mobile">
           <el-input v-model="LoginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
@@ -60,9 +60,7 @@ export default {
           { required: true, message: '请输入手机号', tiggir: 'blur' },
           { validator: checkMobile, tiggir: 'blur' }
         ],
-        code: [
-          { required: true, message: '请输入密码', tiggir: 'blur' }
-        ]
+        code: [{ required: true, message: '请输入密码', tiggir: 'blur' }]
       },
       checked: true
     }
@@ -78,6 +76,18 @@ export default {
     submitForm () {
       this.$refs.LoginForm.validate(valid => {
         if (valid) {
+          this.$http
+            .post(
+              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              this.LoginForm
+            )
+            .then(res => {
+              const data = res.data.data
+              console.log(data)
+            })
+            .catch(err => {
+              console.log(err)
+            })
           this.$router.push('/')
         }
       })
